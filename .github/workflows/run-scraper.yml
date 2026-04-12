@@ -8,9 +8,6 @@ env:
   NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
 
 on:
-  pull_request:
-    types: [ opened, synchronize ]
-  
   workflow_dispatch:
 
   schedule:
