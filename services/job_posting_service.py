@@ -12,8 +12,8 @@ NOTION_DB_ID = os.getenv("NOTION_DB_ID")
 notionClient = Client(auth=NOTION_INTEGRATION_SECRET)
 
 def create_job_posting_page(job_posting: JobPosting):
-    position, company_url, job_posting_url = job_posting.position, job_posting.company_link, job_posting.job_posting_link
-    
+    position, company_url, job_posting_url, search_query, region = job_posting.position, job_posting.company_link, job_posting.job_posting_link, job_posting.search_query, job_posting.region
+
     notionClient.pages.create(
         parent={"database_id": NOTION_DB_ID},
         properties={
@@ -36,6 +36,17 @@ def create_job_posting_page(job_posting: JobPosting):
             "JobPostingLink": {
                 "type": "url",
                 "url": job_posting_url
+            },
+            
+            "SearchQuery": {
+                "type": "rich_text",
+                "rich_text": [
+                    {
+                        "text": {
+                            "content": f'{search_query} | {region}'
+                        }
+                    }
+                ]
             }
         },
         icon={
