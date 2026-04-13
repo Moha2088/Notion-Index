@@ -9,6 +9,18 @@ query_strings = [
     "software+developer",
     "backend+developer",
     "software+udvikler",
+    "developer",
+    ".NET",
+    "C#",
+    "React",
+    "TypeScript",
+    "Next.js"
+]
+
+regions = [
+    "region-syddanmark",
+    "region-hovedstaden",
+    "region-midtjylland"
 ]
 
 excluded_keywords = [
@@ -22,30 +34,39 @@ excluded_keywords = [
 ]
 
 def scrape_job_posting():
-    target_class = "PaidJob-inner"
     random_query_string = query_strings[randint(0, len(query_strings) - 1)]
-    url = "https://www.jobindex.dk/jobsoegning/region-syddanmark?q=" + random_query_string
+    random_region = regions[randint(0, len(regions) - 1)]
+    random_page = randint(1, 5)
+    
+    target_class = "PaidJob-inner"
+    print(random_query_string)
+    url = f'https://www.jobindex.dk/jobsoegning/{random_region}?page={random_page}&q={random_query_string}'
+    print(url)
 
     html_response = wait_for_content(url)
 
     soup = BeautifulSoup(html_response, "html.parser")
-    target_div = soup.find(class_=target_class)
+    target_divs = soup.find_all(class_=target_class)
 
-    if(not target_div):
+    if target_divs.__len__() == 0:
         return
+
+    target_div = target_divs[randint(0, target_divs.__len__() - 1)]
 
     company_url = target_div.find("a")["href"]
     position = target_div.find("h4").text
     job_posting_url = target_div.find("h4").find("a")["href"]
 
-    if(any(keyword in position.lower() for keyword in excluded_keywords)):
+    if any(keyword in position.lower() for keyword in excluded_keywords):
         print(f"Excluded job posting with position: {position}\nTrying again...")
         return scrape_job_posting()
 
     return JobPosting(
         position=position,
         company_link=company_url,
-        job_posting_link=job_posting_url
+        job_posting_link=job_posting_url,
+        search_query=random_query_string,
+        region=random_region
     )
 
 
