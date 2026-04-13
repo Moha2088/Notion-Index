@@ -1,7 +1,6 @@
 # Notion-Index
 
 Web scraper that finds relevant job postings, and writes them to a notion db on a schedule.
-<hr>
 
 ## Tech Stack
 - Python
