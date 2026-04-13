@@ -1,6 +1,6 @@
 from random import randint
 from bs4 import BeautifulSoup
-from playwright.sync_api import sync_playwright
+from playwright.async_api import async_playwright
 from models.job_posting import JobPosting
 
 
@@ -33,7 +33,7 @@ excluded_keywords = [
     "student"
 ]
 
-def scrape_job_posting():
+async def scrape_job_posting():
     random_query_string = query_strings[randint(0, len(query_strings) - 1)]
     random_region = regions[randint(0, len(regions) - 1)]
     random_page = randint(1, 5)
@@ -43,7 +43,7 @@ def scrape_job_posting():
     url = f'https://www.jobindex.dk/jobsoegning/{random_region}?page={random_page}&q={random_query_string}'
     print(url)
 
-    html_response = wait_for_content(url)
+    html_response = await wait_for_content(url)
 
     soup = BeautifulSoup(html_response, "html.parser")
     target_divs = soup.find_all(class_=target_class)
@@ -70,14 +70,14 @@ def scrape_job_posting():
     )
 
 
-def wait_for_content(url: str):
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
-        context = browser.new_context()
-        page = context.new_page()
-        page.goto(url)
+async def wait_for_content(url: str):
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True)
+        context = await browser.new_context()
+        page = await context.new_page()
+        await page.goto(url)
         page.wait_for_selector(".PaidJob-inner")
-        html_response = page.content()
-        browser.close()
+        html_response = await page.content()
+        await browser.close()
     
     return html_response
