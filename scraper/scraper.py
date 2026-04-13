@@ -5,7 +5,7 @@ from models.job_posting import JobPosting
 
 
 query_strings = [
-    "fullstack",
+    "full+stack",
     "software+developer",
     "backend+developer",
     "software+udvikler",
