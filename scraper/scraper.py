@@ -57,8 +57,7 @@ async def scrape_job_posting():
     job_posting_url = target_div.find("h4").find("a")["href"]
 
     if any(keyword in position.lower() for keyword in excluded_keywords):
-        print(f"Excluded job posting with position: {position}\nTrying again...")
-        return await scrape_job_posting()
+        return
 
     return JobPosting(
         position=position,

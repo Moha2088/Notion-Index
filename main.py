@@ -7,6 +7,10 @@ import asyncio
 async def main():
     job_posting: JobPosting = await scrape_job_posting()
 
+    if job_posting is None:
+        print("No job posting found!")
+        return
+
     print("Scraped job posting:")
     print(job_posting)
 
