@@ -36,11 +36,10 @@ excluded_keywords = [
 async def scrape_job_posting():
     random_query_string = query_strings[randint(0, len(query_strings) - 1)]
     random_region = regions[randint(0, len(regions) - 1)]
-    random_page = randint(1, 5)
     
     target_class = "PaidJob-inner"
     print(random_query_string)
-    url = f'https://www.jobindex.dk/jobsoegning/{random_region}?page={random_page}&q={random_query_string}'
+    url = f'https://www.jobindex.dk/jobsoegning/{random_region}?q={random_query_string}'
     print(url)
 
     html_response = await wait_for_content(url)
@@ -76,7 +75,7 @@ async def wait_for_content(url: str):
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto(url)
-        page.wait_for_selector(".PaidJob-inner")
+        await page.wait_for_selector(".PaidJob-inner")
         html_response = await page.content()
         await browser.close()
     
