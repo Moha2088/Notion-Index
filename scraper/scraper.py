@@ -58,7 +58,7 @@ async def scrape_job_posting():
 
     if any(keyword in position.lower() for keyword in excluded_keywords):
         print(f"Excluded job posting with position: {position}\nTrying again...")
-        return scrape_job_posting()
+        return await scrape_job_posting()
 
     return JobPosting(
         position=position,
