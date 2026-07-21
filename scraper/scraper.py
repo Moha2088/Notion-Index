@@ -52,7 +52,7 @@ async def scrape_job_posting():
 
     target_div = target_divs[randint(0, target_divs.__len__() - 1)]
 
-    company_url = target_div.find("a")["href"]
+    company_name = target_div.find("a").find("img")["alt"]
     position = target_div.find("h4").text
     job_posting_url = target_div.find("h4").find("a")["href"]
 
@@ -61,7 +61,7 @@ async def scrape_job_posting():
 
     return JobPosting(
         position=position,
-        company_link=company_url,
+        company_link=company_name,
         job_posting_link=job_posting_url,
         search_query=random_query_string,
         region=random_region
