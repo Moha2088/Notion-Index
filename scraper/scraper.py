@@ -61,7 +61,7 @@ async def scrape_job_posting():
 
     return JobPosting(
         position=position,
-        company_link=company_name,
+        company_name=company_name,
         job_posting_link=job_posting_url,
         search_query=random_query_string,
         region=random_region
