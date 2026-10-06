@@ -2,7 +2,9 @@ from random import randint
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 from models.job_posting import JobPosting
+import logging
 
+logger = logging.getLogger(__name__)
 
 query_strings = [
     "full+stack",
@@ -30,17 +32,17 @@ excluded_keywords = [
     "manager",
     "director",
     "business",
-    "student"
 ]
 
 async def scrape_job_posting():
+    logger.info("Scraping..")
+
     random_query_string = query_strings[randint(0, len(query_strings) - 1)]
     random_region = regions[randint(0, len(regions) - 1)]
-    
+
     target_class = "PaidJob-inner"
-    print(random_query_string)
     url = f'https://www.jobindex.dk/jobsoegning/{random_region}?q={random_query_string}'
-    print(url)
+    logger.info("URL created: %s", url)
 
     html_response = await wait_for_content(url)
 
@@ -61,8 +63,8 @@ async def scrape_job_posting():
 
     return JobPosting(
         position=position,
-        company_name=company_name,
-        job_posting_link=job_posting_url,
+        company_name=str(company_name),
+        job_posting_link=str(job_posting_url),
         search_query=random_query_string,
         region=random_region
     )
@@ -74,7 +76,7 @@ async def wait_for_content(url: str):
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto(url)
-        await page.wait_for_selector(".PaidJob-inner")
+        await page.wait_for_selector(".PaidJob-inner", timeout=50000)
         html_response = await page.content()
         await browser.close()
     
