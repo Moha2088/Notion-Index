@@ -2,9 +2,8 @@ from random import randint
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 from models.job_posting import JobPosting
-import logging
+from config.logger import logger
 
-logger = logging.getLogger(__name__)
 
 query_strings = [
     "full+stack",
