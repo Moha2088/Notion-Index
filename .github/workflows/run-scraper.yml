@@ -35,7 +35,7 @@ jobs:
         run: uv sync --frozen
 
       - name: Install Playwright
-        run: uv run playwright install
+        run: uv run playwright install chromium --with-deps
 
       - name: Run scraper
         run: uv run python main.py
