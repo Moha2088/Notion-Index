@@ -74,7 +74,7 @@ async def wait_for_content(url: str):
         browser = await pw.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
-        await page.goto(url)
+        await page.goto(url, wait_until="domcontentloaded", timeout=60000)
         await page.wait_for_selector(".PaidJob-inner", timeout=50000)
         html_response = await page.content()
         await browser.close()
