@@ -6,6 +6,12 @@ name: Run Scraper
 env:
   NOTION_INTEGRATION_SECRET: ${{ secrets.NOTION_INTEGRATION_SECRET }}
   NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
+  NOTION_DATA_SOURCE_ID: ${{ secrets.NOTION_DATA_SOURCE_ID }}
+  NOTION_DB_URL: ${{ secrets.NOTION_DB_URL }}
+  ACCOUNT_SID: ${{ secrets.ACCOUNT_SID }}
+  AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+  FROM_NUMBER: ${{ secrets.FROM_NUMBER }}
+  TO_NUMBER: ${{ secrets.TO_NUMBER }}
 
 on:
   workflow_dispatch:
